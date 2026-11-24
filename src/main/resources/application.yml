@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: tds-task
+  web:
+    error:
+      include-stacktrace: never
+parking:
+  size: 20
