@@ -50,5 +50,6 @@ Errors: `409` car park full or vehicle already parked, `404` bill for a vehicle 
 ## Things to improve
 
 - Exception handling - a global `@RestControllerAdvice` with error bodies instead of empty responses.
-- Concurrency - parallel requests can take the same space or bill a vehicle twice; `synchronized` service methods would fix it.
+- Concurrency - parallel requests can take the same space or bill a vehicle twice. Fix with `synchronized` service methods,
+  or for high traffic a lock per parking space plus a `ConcurrentHashMap` of reg to space, covered by a multi-threaded test.
 - Time-based test - no test covers a real charge over time; an injected `Clock` would allow it.
