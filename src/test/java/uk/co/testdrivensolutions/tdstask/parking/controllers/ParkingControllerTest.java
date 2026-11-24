@@ -100,6 +100,31 @@ class ParkingControllerTest {
         park("XYZ1234").andExpect(status().isConflict());
     }
 
+    @Test
+    void missingVehicleTypeIsRejected() throws Exception {
+        postJson("/parking", """
+                {"vehicleReg":"ABC1"}
+                """).andExpect(status().isBadRequest());
+        mockMvc.perform(get("/parking"))
+                .andExpect(jsonPath("$.occupiedSpaces").value(0));
+    }
+
+    @Test
+    void missingVehicleRegIsRejected() throws Exception {
+        postJson("/parking", """
+                {"vehicleType":1}
+                """).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void billWithoutVehicleRegIsRejected() throws Exception {
+        postJson("/parking/bill", "{}").andExpect(status().isBadRequest());
+    }
+
+    private ResultActions postJson(String url, String body) throws Exception {
+        return mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(body));
+    }
+
     private ResultActions park(String vehicleReg) throws Exception {
         return mockMvc.perform(post("/parking")
                 .contentType(MediaType.APPLICATION_JSON)

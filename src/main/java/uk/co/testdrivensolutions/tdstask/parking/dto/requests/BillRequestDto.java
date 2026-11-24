@@ -1,4 +1,6 @@
 package uk.co.testdrivensolutions.tdstask.parking.dto.requests;
 
-public record BillRequestDto(String vehicleReg) {
+import jakarta.validation.constraints.NotBlank;
+
+public record BillRequestDto(@NotBlank String vehicleReg) {
 }

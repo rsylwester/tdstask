@@ -1,5 +1,6 @@
 package uk.co.testdrivensolutions.tdstask.parking.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ParkingController {
     private final ParkingService parkingService;
 
     @PostMapping
-    public ResponseEntity<VehicleSpaceOrderConfirmationResponseDto> occupyParkSpace(@RequestBody VehicleSpaceReservationRequestDto request) {
+    public ResponseEntity<VehicleSpaceOrderConfirmationResponseDto> occupyParkSpace(@Valid @RequestBody VehicleSpaceReservationRequestDto request) {
         return parkingService.reserveParkingSpace(request)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
@@ -32,7 +33,7 @@ public class ParkingController {
     }
 
     @PostMapping("/bill")
-    public ResponseEntity<ParkingBillResponseDto> billForParking(@RequestBody BillRequestDto billRequestDto) {
+    public ResponseEntity<ParkingBillResponseDto> billForParking(@Valid @RequestBody BillRequestDto billRequestDto) {
         return ResponseEntity.ok(parkingService.freeVehicleSpace(billRequestDto.vehicleReg()));
     }
 }
